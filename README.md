@@ -1,6 +1,8 @@
-# Diverse Controllable Diffusion Policy with Signal Temporal Logic
+# Diverse Controllable Diffusion Policy with Signal Temporal Logic 
 
 [![Arxiv](https://img.shields.io/badge/Under-review-blue)](https://ieeexplore.ieee.org/iel7/7083369/7339444/10251585.pdf)
+
+[Project page](https://mengyuest.github.io/pSTL-diffusion-policy/)
 
 [<ins>Reliable Autonomous Systems Lab @ MIT (REALM)</ins>](https://aeroastro.mit.edu/realm/)
 
@@ -9,6 +11,5 @@
 ![image info](./arch-v4-color_new.png)
 
 > Introducing a novel approach leveraging Signal Temporal Logic (STL) and diffusion models, our method generates diverse, rule-compliant trajectories for autonomous driving simulations. Achieving superior performance compared to baselines, it offers efficient runtime and high rule satisfaction rates
-
 
 ## More content (paper, code, annotation tools, dataset) coming soon
