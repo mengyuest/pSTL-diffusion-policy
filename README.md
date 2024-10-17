@@ -1,7 +1,9 @@
-# Diverse Controllable Diffusion Policy with Signal Temporal Logic
+# Diverse Controllable Diffusion Policy with Signal Temporal Logic 
 
 [![Journal](https://img.shields.io/badge/RA--L-Accepted-success)](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10638176)
 [![Conference](https://img.shields.io/badge/ICRA2025-Present-success)](https://2025.ieee-icra.org/)
+
+[Project page](https://mengyuest.github.io/pSTL-diffusion-policy/)
 
 [<ins>Reliable Autonomous Systems Lab @ MIT (REALM)</ins>](https://aeroastro.mit.edu/realm/)
 
