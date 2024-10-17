@@ -153,7 +153,7 @@ class NuScenesSim:
         sample_d["left_id"] = torch.tensor([(left_id!=-1) * 1.0])
         sample_d["right_id"] = torch.tensor([(right_id!=-1) * 1.0])
         sample_d["gt_traj"] = napi.get_ego_trajectory(nusc, self.meta_d[self.traj_i][self.ti+1: self.ti+1+args.nt], args.dt, return_numpy=True)
-        sample_d["gt_high_level"] = napi.get_high_level_behaviors(nusc, anno_data, self.ti+1, args.nt, args.new_infer, sample_d, sample_d["gt_traj"])
+        sample_d["gt_high_level"] = napi.get_high_level_behaviors(nusc, anno_data, self.ti+1, args.nt, sample_d, sample_d["gt_traj"])
 
         # TODO compute for new gt_stlp
         if sample_d["gt_traj"].shape[0] < args.nt:
