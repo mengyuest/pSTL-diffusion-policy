@@ -1,2 +1,5 @@
 .vscode
 .DS_Store
+exps/*
+tmp_script.py
+*_bak.txt

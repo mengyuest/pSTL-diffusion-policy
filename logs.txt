@@ -1,0 +1,116 @@
+## All experiments
+
+# Collect data
+(g0212-112309_v18_dataN8)
+python nusc_train.py -e e0_nusc_cache --collect_data
+
+# Trajectory Optimization
+(g0224-184245_v18_TJf)
+python nusc_train.py -e e1_nusc_trajopt --trajopt_only 
+
+# Train base DDPM
+(g0314-204335_v18n_diff)
+python nusc_train.py -e e5_ddpm --diffusion --stl_weight 0.0 --load_stlp
+
+# Train RefineNet
+(g0316-115309_v18n_diffrect_clip_int_reg0_stl0_hist5)
+python nusc_train.py -e e7_ours --diffusion --stl_weight 0.0 --load_stlp -P e5_ddpm --rect_head --flex --diverse_loss --multi_cands 5
+
+# Open-loop test 
+# diffusion only
+(g0316-115309_v18n_diffrect_clip_int_reg0_stl0_hist5/test_0318-122959)
+python nusc_train.py -e e7_ours --diffusion --stl_weight 0.0 --load_stlp --rect_head --flex --diverse_loss --multi_cands 5 --test -P e7_ours --run_sampling_test --skip_nusc_load --viz_correct
+
+# diffusion+guidance
+(? can we skip_nusc_load?)
+(g0316-115309_v18n_diffrect_clip_int_reg0_stl0_hist5/test_0321-223023_eval10lr.01_10c_3n)
+python nusc_train.py -e e7_ours --diffusion --stl_weight 0.0 --load_stlp --rect_head --flex --diverse_loss --multi_cands 10 --test -P e7_ours --run_sampling_test  --viz_correct --guidance --guidance_before 10 --guidance_niters 1 --guidance_lr 0.01 --n_rolls 3 --other
+
+
+# TRAIN for baselines
+# VAE
+(g0317-170846_v18_vaeMoN)
+python nusc_train.py -e e2_vae_mono --bc_weight 1.0 --stl_weight 0.0 --load_stlp --vae --flex --gt_data_training
+
+# VAE(YES)
+(g0311-025457_v18_VAE)
+python nusc_train.py -e e3_vae --bc_weight 1.0 --stl_weight 0.0 --load_stlp --vae --flex --use_init_hint
+
+# DDPM
+(g0318-011513_v18n_diff_mono)
+(? doesn't have --measure_diversity)
+python nusc_train.py -e e4_ddpm_mono --diffusion --stl_weight 0.0 --load_stlp --gt_data_training
+
+# DDPM(YES)
+(g0314-204335_v18n_diff)
+
+# TrafficSim
+(g0317-170846_v18_trfsim_stl)
+python nusc_train.py -e e6_trafficsim --bc_weight 1.0 --stl_weight 1.0 --load_stlp --vae --flex --collision_loss 1.0
+
+# baselines
+# VAE
+(g0317-170846_v18_vaeMoN/test_0318-205551)
+python nusc_train.py -e e2_vae_mono --bc_weight 1.0 --stl_weight 0.0 --load_stlp --vae --flex --run_sampling_test --test -P e2_vae_mono --skip_nusc_load --viz_correct
+
+# VAE(YES)
+(g0311-025457_v18_VAE/test_0318-212514)
+python nusc_train.py -e e3_vae --bc_weight 1.0 --stl_weight 0.0 --load_stlp --vae --flex --use_init_hint --run_sampling_test --test -P e3_vae --skip_nusc_load --viz_correct
+
+# DDPM
+(g0318-011513_v18n_diff_mono/test_0318-210938)
+python nusc_train.py -e e4_ddpm_mono --diffusion --stl_weight 0.0 --load_stlp --flex --run_sampling_test --test -P e4_ddpm_mono --skip_nusc_load --viz_correct
+
+# DDPM(YES)
+(g0314-204335_v18n_diff/test_0318-214019)
+python nusc_train.py -e e5_ddpm --diffusion --stl_weight 0.0 --load_stlp --flex --run_sampling_test --test -P e5_ddpm --skip_nusc_load --viz_correct
+
+# TrafficSim
+(g0317-170846_v18_trfsim_stl/test_0319-021851)
+python nusc_train.py -e e6_trafficsim --bc_weight 1.0 --stl_weight 1.0 --load_stlp --flex --vae --collision_loss 1.0 --run_sampling_test --test -P e6_trafficsim --other --viz_correct
+
+# CTG
+(g0314-204335_v18n_diff/test_0318-214714)
+python nusc_train.py -e e5_ddpm --diffusion --stl_weight 0.0 --load_stlp --flex --run_sampling_test --test -P e5_ddpm --skip_nusc_load --viz_correct --guidance
+
+# ablations
+# w/o RefineNet
+(g0316-115309_v18n_diffrect_clip_int_reg0_stl0_hist5/test_0618-102436)
+python nusc_train.py -e e7_ours --diffusion --stl_weight 0.0 --load_stlp --rect_head --flex --diverse_loss --multi_cands 5 --run_sampling_test --test -P e7_ours --skip_nusc_load --viz_correct --no_refinenet
+
+# L_STL
+(g0621-134128_v18n_diffrect_hist5_stl1/test_0622-000656)
+python nusc_train.py -e e8_ours_ablation --diffusion --stl_weight 1.0 --load_stlp --rect_head --flex --diversity_weight 0.0 --multi_cands 5 --run_sampling_test --test -P e8_ours_ablation --skip_nusc_load --viz_correct
+
+# L_STL TRAIN TODO
+python nusc_train.py -e e8_ours_ablation --diffusion --stl_weight 1.0 --load_stlp --load_tj --rect_head --flex -P e5_ddpm --diversity_weight 0.0 --n_shards 4 --interval --multi_cands 5 --diff_full
+
+# Closed-loop test
+# diffusion only
+(test_0321-122929_cand5)
+python nusc_sim.py -e e7_ours --diffusion --stl_weight 0.0 --rect_head --flex --diverse_loss --multi_cands 5 --test -P e7_ours --filter_traj 0 --test_scenes --viz_last --suffix sim
+
+# diffusion+guidance
+(test_0321-184107_n10_1_lr.04)
+python nusc_sim.py -e e7_ours --diffusion --stl_weight 0.0 --rect_head --flex --diverse_loss --multi_cands 5 --test -P e7_ours --filter_traj 0 --test_scenes --viz_last --guidance --guidance_before 10 --guidance_niters 1 --guidance_lr 0.04 --suffix sim_guide
+
+# baselines
+# VAE
+(g0311-025457_v18_VAE/test_0319-125936)
+python nusc_sim.py -e e3_vae --vae --stl_weight 0.0 --use_init_hint --bc_weight 1.0 --flex --test -P e3_vae --filter_traj 0 --test_scenes --viz_last --suffix sim
+
+# DDPM
+(g0314-204335_v18n_diff/test_0319-100940)
+python nusc_sim.py -e e5_ddpm --diffusion --stl_weight 0.0 --flex --test -P e5_ddpm --filter_traj 0 --test_scenes --viz_last --suffix sim
+
+# TrafficSim
+(g0317-170846_v18_trfsim_stl/test_0319-035744)
+python nusc_sim.py -e e6_trafficsim --bc_weight 1.0 --stl_weight 1.0 --flex --vae --collision_loss 1.0 --test -P e6_trafficsim --filter_traj 0 --test_scenes --viz_last --suffix sim
+
+# CTG
+(g0314-204335_v18n_diff/test_0319-102431)
+python nusc_sim.py -e e5_ddpm --diffusion --stl_weight 0.0 --flex --test -P e5_ddpm --guidance --filter_traj 0 --test_scenes --viz_last --suffix sim_ctg
+
+# (video)
+# generate video
+python nusc_sim.py -e e7_ours --diffusion --stl_weight 0.0 --rect_head --flex --diverse_loss --multi_cands 5 --test -P e7_ours --filter_traj 0 --test_scenes --guidance --guidance_before 10 --guidance_niters 1 --guidance_lr 0.04 --suffix video
